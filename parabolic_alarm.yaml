@@ -9,7 +9,9 @@ blueprint:
       selector:
         entity:
           filter:
-            - domain: input_datetime
+            - domain: 
+                - input_datetime
+                - sensor
     workday_sensor:
       name: Workday Sensor
       description: Binary Sensor for determining whether it should run. Typically from Workday Integration
