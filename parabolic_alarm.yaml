@@ -11,7 +11,6 @@ blueprint:
           filter:
             - domain: 
                 - input_datetime
-                - sensor
     workday_sensor:
       name: Workday Sensor
       description: Binary Sensor for determining whether it should run. Typically from Workday Integration
@@ -135,9 +134,15 @@ blueprint:
           max: 60
       default: 5
 
+trigger_variables:
+  alarm_start_time: !input alarm_start_time
+  alarm_length_1: !input alarm_length_1
+  alarm_length_2: !input alarm_length_2
+  alarm_length_3: !input alarm_length_3
+
 trigger:
   - platform: time
-    at: !input alarm_start_time
+    at: '{{ ( strptime(states(alarm_start_time), "%H:%M:%S") - timedelta( minutes = alarm_length_1 + alarm_length_2 + alarm_length_3 ) ) | as_timestamp | timestamp_custom("%H:%M:%S") }}'
 
 condition:
   - condition: state
